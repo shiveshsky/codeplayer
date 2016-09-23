@@ -1,0 +1,137 @@
+<html>
+    <head>
+           <script src="jquery-3.1.0.min.js"></script>
+            <link href="jquery-ui/jqueryui/jquery-ui.css" rel="stylesheet">
+        <script src="jquery-ui/jqueryui/jquery-ui.js"></script>
+        <style type="text/css">
+            .top{
+                background-color: #EEEEEE;
+                width: 100%;
+                height: 10%;
+                float: left;
+                
+            }
+            
+            #title{
+            
+                font-size: 150%;
+                margin-top: 1%;
+                margin-bottom: 1%;
+                float: left;
+                font-weight: bold;
+            }
+         
+            body{
+                
+                margin: 0px;
+                padding: 0px;
+                font-family: helvetica;
+            }
+            #buttonregion{
+                width: 30%;
+                margin: 0px auto;
+            }
+            .toggle{
+                float: left;
+                border: 1px solid gray;
+                padding: 2.2%;
+                border-right: none;
+                font-size: 90%;
+                margin-top: 1.9%;
+            }
+            #html{
+                border-top-left-radius: 10%;
+                border-bottom-left-radius: 10%;
+            }
+            #output{
+                border-right: 1px solid gray;
+                 border-top-right-radius: 10%;
+                border-bottom-right-radius: 10%;
+            }
+            .active{
+                background-color: #F5F9FF;
+            }
+            .highlightedbutton{
+                background-color:#A9A9A9 
+            }
+            textarea{
+               padding: 0px;
+               border-top: none;
+                border-bottom: none;
+                border-color: grey;
+                resize: none;
+            }
+            .panel{
+                 width: 50%;
+                float: left;
+                padding: 0px;
+                border-left: none;
+            }
+            iframe{
+                border: none;
+            }
+            .hidden{
+                display: none;
+            }
+        </style>
+    <title>Code Player</title
+     
+        
+    </head>
+    <b>
+        <div class="top">
+            <span id="title">CodePlayer</span>
+            <div id="buttonregion">
+                <div class="toggle active" id="html">HTML</div>
+                <div class="toggle" id="css">CSS</div>
+                <div class="toggle" id="javascript">JavaScript</div>
+                <div class="toggle active" id="output">Output</div>
+                </div>
+        </div>
+        
+        <div id="bodycontainer">
+        
+        <textarea id="htmlpanel" class="panel"></textarea>
+             <textarea id="csspanel" class="panel hidden"></textarea>
+             <textarea id="javascriptpanel" class="panel hidden"></textarea>
+        <iframe id="outputpanel" class="panel"></iframe>
+        
+        
+        </div>
+        
+        <script type="text/javascript">
+            $(".toggle").hover(function(){
+                $(this).addClass("highlightedbutton");
+            },function(){
+                 $(this).removeClass("highlightedbutton");
+            });
+            $(".toggle").click(function(){
+                $(this).toggleClass("active");
+                $(this).removeClass("highlightedbutton");
+                var code=$(this).attr("id")+"panel";
+               
+                $("#"+code).toggleClass("hidden");
+                
+                
+                var numCls=4-$('.hidden').length;
+                   $(".panel").width(($(window).width()/numCls)-10);
+            });
+            $(".panel").height($(window).height()-$(".top").height());
+            $(".panel").width(($(window).width()/2)-10);
+                updateCode();
+            $(".panel").on('change keyup paste', function() {
+    // your code here
+               updateCode();
+            });
+            
+            function updateCode()
+            {
+                var code=$("iframe").contents().find("html").html("<html><head> <style type='text/css'>"+$("#csspanel").val()+"</style> </head><body>"+$("#htmlpanel").val()+"</body></html> ");
+             
+                document.getElementById("outputpanel").contentWindow.eval($("#javascriptpanel").val());
+                
+            }
+        </script>
+    </body>
+    
+</html>
